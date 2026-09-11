@@ -1,16 +1,19 @@
 package com.arjun.pages.saucedemo;
 
+import java.time.Duration;
+import java.util.List;
+
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
-
-import java.util.List;
+import org.openqa.selenium.support.ui.ExpectedConditions;
+import org.openqa.selenium.support.ui.WebDriverWait;
 
 public class CartPage {
 
     private WebDriver driver;
+    private WebDriverWait wait;
 
-    // Locators
     private By cartItems = By.className("cart_item");
     private By productNames = By.cssSelector(".cart_item .inventory_item_name");
     private By productPrices = By.className("inventory_item_price");
@@ -24,51 +27,66 @@ public class CartPage {
     private By checkoutButton =
             By.id("checkout");
 
-    // Constructor
     public CartPage(WebDriver driver) {
         this.driver = driver;
+        this.wait = new WebDriverWait(driver, Duration.ofSeconds(15));
     }
 
-    // Cart methods
-
     public int getCartItemCount() {
-        List<WebElement> items =
-                driver.findElements(cartItems);
-
+        List<WebElement> items = driver.findElements(cartItems);
         return items.size();
     }
 
     public String getFirstProductName() {
-        return driver.findElements(productNames)
-                .get(0)
-                .getText();
+        return driver.findElements(productNames).get(0).getText();
     }
 
     public String getFirstProductPrice() {
-        return driver.findElements(productPrices)
-                .get(0)
-                .getText();
+        return driver.findElements(productPrices).get(0).getText();
     }
 
     public void removeBackpack() {
-        driver.findElement(removeBackpackButton).click();
+        wait.until(
+                ExpectedConditions.elementToBeClickable(removeBackpackButton)
+        ).click();
+
+        wait.until(
+                ExpectedConditions.numberOfElementsToBe(
+                        cartItems, 0
+                )
+        );
     }
 
     public void clickContinueShopping() {
-        driver.findElement(continueShoppingButton).click();
+        wait.until(
+                ExpectedConditions.elementToBeClickable(
+                        continueShoppingButton
+                )
+        ).click();
+
+        wait.until(
+                ExpectedConditions.urlContains("inventory.html")
+        );
     }
 
     public void clickCheckout() {
-        driver.findElement(checkoutButton).click();
+        wait.until(
+                ExpectedConditions.elementToBeClickable(
+                        checkoutButton
+                )
+        ).click();
+
+        wait.until(
+                ExpectedConditions.urlContains(
+                        "checkout-step-one.html"
+                )
+        );
     }
 
     public boolean isProductPresent(String productName) {
-
-        List<WebElement> products =
-                driver.findElements(productNames);
+        List<WebElement> products = driver.findElements(productNames);
 
         for (WebElement product : products) {
-
             if (product.getText().equals(productName)) {
                 return true;
             }
