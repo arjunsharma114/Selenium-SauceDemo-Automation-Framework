@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!DOCTYPE suite SYSTEM "https://testng.org/testng-1.0.dtd">
+
+<suite name="Selenium Test Suite">
+
+    <listeners>
+        <listener class-name="com.arjun.listeners.TestListener"/>
+    </listeners>
+
+    <test name="Google Tests">
+	<parameter name="browser" value="chrome"/>
+        <classes>
+            <class name="com.arjun.tests.saucedemo.HomePageTest"/>
+            <class name="com.arjun.tests.saucedemo.LoginTest"/>
+             <class name="com.arjun.tests.saucedemo.ProductTest"/>
+             <class name="com.arjun.tests.saucedemo.CartTest"/>
+        </classes>
+
+    </test>
+
+</suite>
