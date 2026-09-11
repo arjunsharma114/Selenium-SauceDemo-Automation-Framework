@@ -45,7 +45,11 @@ public class CartPage {
     }
 
     public String getFirstProductPrice() {
-        return driver.findElements(productPrices).get(0).getText();
+        WebElement price = wait.until(
+                ExpectedConditions.visibilityOfElementLocated(productPrices)
+        );
+
+        return price.getText();
     }
 
     public void removeBackpack() {
