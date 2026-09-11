@@ -4,6 +4,7 @@ import java.time.Duration;
 import java.util.List;
 
 import org.openqa.selenium.By;
+import org.openqa.selenium.JavascriptExecutor;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.ui.ExpectedConditions;
@@ -15,8 +16,10 @@ public class CartPage {
     private WebDriverWait wait;
 
     private By cartItems = By.className("cart_item");
-    private By productNames = By.cssSelector(".cart_item .inventory_item_name");
-    private By productPrices = By.className("inventory_item_price");
+    private By productNames =
+            By.cssSelector(".cart_item .inventory_item_name");
+    private By productPrices =
+            By.className("inventory_item_price");
 
     private By removeBackpackButton =
             By.id("remove-sauce-labs-backpack");
@@ -46,9 +49,15 @@ public class CartPage {
     }
 
     public void removeBackpack() {
-        wait.until(
-                ExpectedConditions.elementToBeClickable(removeBackpackButton)
-        ).click();
+
+        WebElement button = wait.until(
+                ExpectedConditions.elementToBeClickable(
+                        removeBackpackButton
+                )
+        );
+
+        ((JavascriptExecutor) driver)
+                .executeScript("arguments[0].click();", button);
 
         wait.until(
                 ExpectedConditions.numberOfElementsToBe(
@@ -58,23 +67,33 @@ public class CartPage {
     }
 
     public void clickContinueShopping() {
-        wait.until(
+
+        WebElement button = wait.until(
                 ExpectedConditions.elementToBeClickable(
                         continueShoppingButton
                 )
-        ).click();
+        );
+
+        ((JavascriptExecutor) driver)
+                .executeScript("arguments[0].click();", button);
 
         wait.until(
-                ExpectedConditions.urlContains("inventory.html")
+                ExpectedConditions.urlContains(
+                        "inventory.html"
+                )
         );
     }
 
     public void clickCheckout() {
-        wait.until(
+
+        WebElement button = wait.until(
                 ExpectedConditions.elementToBeClickable(
                         checkoutButton
                 )
-        ).click();
+        );
+
+        ((JavascriptExecutor) driver)
+                .executeScript("arguments[0].click();", button);
 
         wait.until(
                 ExpectedConditions.urlContains(
@@ -84,9 +103,12 @@ public class CartPage {
     }
 
     public boolean isProductPresent(String productName) {
-        List<WebElement> products = driver.findElements(productNames);
+
+        List<WebElement> products =
+                driver.findElements(productNames);
 
         for (WebElement product : products) {
+
             if (product.getText().equals(productName)) {
                 return true;
             }
